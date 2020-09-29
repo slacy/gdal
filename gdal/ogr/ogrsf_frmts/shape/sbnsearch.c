@@ -327,7 +327,7 @@ SBNSearchHandle SBNOpenDiskTree( const char* pszSBNFilename,
 /* -------------------------------------------------------------------- */
 /*      Read node descriptors.                                          */
 /* -------------------------------------------------------------------- */
-    if (hSBN->sHooks.FRead(pabyData, nNodeDescSize, 1,
+    if (hSBN->sHooks.FRead(pabyData, 1, nNodeDescSize, 
                                   hSBN->fpSBN) != 1)
     {
         free(pabyData);
@@ -391,7 +391,7 @@ SBNSearchHandle SBNOpenDiskTree( const char* pszSBNFilename,
 /*      node.                                                           */
 /*      Note: we could use the .sbx file to compute the offsets instead.*/
 /* -------------------------------------------------------------------- */
-    while( hSBN->sHooks.FRead(abyBinHeader, 8, 1,
+    while( hSBN->sHooks.FRead(abyBinHeader, 1, 8, 
                                      hSBN->fpSBN) == 1 )
     {
         int nBinId;
@@ -628,7 +628,7 @@ static int SBNSearchDiskInternal( SearchStruct* psSearch,
 #ifdef DEBUG_IO
             psSearch->nBytesRead += 8;
 #endif
-            if( hSBN->sHooks.FRead(abyBinHeader, 8, 1,
+            if( hSBN->sHooks.FRead(abyBinHeader, 1, 8, 
                                           hSBN->fpSBN) != 1)
             {
                 hSBN->sHooks.Error( "I/O error" );
@@ -679,7 +679,7 @@ static int SBNSearchDiskInternal( SearchStruct* psSearch,
 #ifdef DEBUG_IO
             psSearch->nBytesRead += nBinSize;
 #endif
-            if (hSBN->sHooks.FRead(pabyBinShape, nBinSize, 1,
+            if (hSBN->sHooks.FRead(pabyBinShape, 1, nBinSize, 
                                           hSBN->fpSBN) != 1)
             {
                 hSBN->sHooks.Error( "I/O error" );

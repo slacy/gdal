@@ -1357,8 +1357,8 @@ int OGRShapeLayer::GetFeatureCountWithSpatialFilterOnly()
             GByte abyBuf[4 + 8 * 4] = {};
             if( hSHP->sHooks.FSeek( hSHP->fpSHP,
                                     hSHP->panRecOffset[iShape] + 8, 0 ) == 0 &&
-                hSHP->sHooks.FRead( abyBuf, sizeof(abyBuf),
-                                    1, hSHP->fpSHP ) == 1 )
+                hSHP->sHooks.FRead( abyBuf, 1, sizeof(abyBuf),
+                                    hSHP->fpSHP ) == 1 )
             {
                 memcpy(&(sShape.nSHPType), abyBuf, 4);
                 CPL_LSBPTR32(&(sShape.nSHPType));
@@ -2294,7 +2294,7 @@ int OGRShapeLayer::ResetGeomType( int nNewGeomType )
 
     char abyHeader[100] = {};
     if( hSHP->sHooks.FSeek( hSHP->fpSHP, 0, SEEK_SET ) != 0
-        || hSHP->sHooks.FRead( abyHeader, 100, 1, hSHP->fpSHP ) != 1 )
+        || hSHP->sHooks.FRead( abyHeader, 1, 100, hSHP->fpSHP ) != 1 )
         return FALSE;
 
     *(reinterpret_cast<GInt32 *>(abyHeader + 32)) = CPL_LSBWORD32( nNewGeomType );
@@ -2312,7 +2312,7 @@ int OGRShapeLayer::ResetGeomType( int nNewGeomType )
     nStartPos = static_cast<int>( hSHP->sHooks.FTell( hSHP->fpSHX ) );
 
     if( hSHP->sHooks.FSeek( hSHP->fpSHX, 0, SEEK_SET ) != 0
-        || hSHP->sHooks.FRead( abyHeader, 100, 1, hSHP->fpSHX ) != 1 )
+        || hSHP->sHooks.FRead( abyHeader, 1, 100, hSHP->fpSHX ) != 1 )
         return FALSE;
 
     *(reinterpret_cast<GInt32 *>(abyHeader + 32)) = CPL_LSBWORD32( nNewGeomType );

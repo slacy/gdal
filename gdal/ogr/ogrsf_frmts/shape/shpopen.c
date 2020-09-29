@@ -433,7 +433,7 @@ SHPOpenLL( const char * pszLayer, const char * pszAccess, SAHooks *psHooks )
 /*  Read the file size from the SHP file.               */
 /* -------------------------------------------------------------------- */
     pabyBuf = STATIC_CAST(uchar *, malloc(100));
-    if( psSHP->sHooks.FRead( pabyBuf, 100, 1, psSHP->fpSHP ) != 1 )
+    if( psSHP->sHooks.FRead( pabyBuf, 1, 100, psSHP->fpSHP ) != 1 )
     {
         psSHP->sHooks.Error( ".shp file is unreadable, or corrupt." );
         psSHP->sHooks.FClose( psSHP->fpSHP );
@@ -454,7 +454,7 @@ SHPOpenLL( const char * pszLayer, const char * pszAccess, SAHooks *psHooks )
 /* -------------------------------------------------------------------- */
 /*  Read SHX file Header info                                           */
 /* -------------------------------------------------------------------- */
-    if( psSHP->sHooks.FRead( pabyBuf, 100, 1, psSHP->fpSHX ) != 1
+    if( psSHP->sHooks.FRead( pabyBuf, 1, 100, psSHP->fpSHX ) != 1
         || pabyBuf[0] != 0
         || pabyBuf[1] != 0
         || pabyBuf[2] != 0x27
@@ -775,7 +775,7 @@ SHPRestoreSHX ( const char * pszLayer, const char * pszAccess, SAHooks *psHooks 
 /*  Read the file size from the SHP file.                               */
 /* -------------------------------------------------------------------- */
     pabyBuf = STATIC_CAST(uchar *, malloc(100));
-    if( psHooks->FRead( pabyBuf, 100, 1, fpSHP ) != 1 )
+    if( psHooks->FRead( pabyBuf, 1, 100, fpSHP ) != 1 )
     {
         psHooks->Error( ".shp file is unreadable, or corrupt." );
         psHooks->FClose( fpSHP );
@@ -824,8 +824,8 @@ SHPRestoreSHX ( const char * pszLayer, const char * pszAccess, SAHooks *psHooks 
 
     while( nCurrentSHPOffset < nSHPFilesize )
     {
-        if( psHooks->FRead( &niRecord, 4, 1, fpSHP ) == 1 &&
-            psHooks->FRead( &nRecordLength, 4, 1, fpSHP ) == 1)
+      if( psHooks->FRead( &niRecord, 1, 4, fpSHP ) == 1 &&
+          psHooks->FRead( &nRecordLength, 1, 4, fpSHP ) == 1)
         {
             if( !bBigEndian ) SwapWord( 4, &nRecordOffset );
             memcpy( abyReadedRecord, &nRecordOffset, 4 );
